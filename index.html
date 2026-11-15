@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数学错题整理智能体 · 站点导航</title>
+<meta name="description" content="数学错题整理智能体：贴一道错题，按固定七段告诉你错在哪、下次怎么防。">
+<style>
+  :root{
+    --paper:#f4f1ea;--card:#fffdf8;--ink:#1f1d1a;--ink-2:#544e45;--ink-3:#8d8578;
+    --line:#e3dccd;--accent:#a04a1e;--accent-2:#7c3813;--teal:#2c6a5e;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    --serif:"Source Han Serif SC","Noto Serif SC","Songti SC",Georgia,serif;
+  }
+  body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.75 var(--sans);
+    background-image:radial-gradient(rgba(160,74,30,.055) 1px,transparent 1px);background-size:22px 22px}
+  .wrap{max-width:780px;margin:0 auto;padding:48px 24px 76px}
+  .eyebrow{font-size:12.5px;letter-spacing:.22em;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor}
+  h1{font-family:var(--serif);font-size:31px;font-weight:600;margin:0 0 10px;line-height:1.4;letter-spacing:.01em}
+  .sub{color:var(--ink-3);font-size:13.5px;margin-bottom:18px;max-width:38em}
+
+  /* ---------- 顶部：当前版本 + 可收起的版本公告（同一个 details） ---------- */
+  details.ver{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:18px}
+  details.ver > summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;
+    padding:10px 14px;font-size:12.5px;color:var(--ink-2);user-select:none}
+  details.ver > summary::-webkit-details-marker{display:none}
+  details.ver > summary .cur{display:inline-flex;align-items:center;gap:7px}
+  details.ver > summary .cur b{font-family:Consolas,monospace;font-size:13px;color:var(--accent-2)}
+  details.ver > summary .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none}
+  details.ver > summary .spacer{flex:1}
+  details.ver > summary .logbtn{color:var(--accent-2);display:inline-flex;align-items:center;gap:6px}
+  details.ver > summary .logbtn::after{content:"▾";font-size:11px;transition:.15s}
+  details.ver[open] > summary .logbtn::after{transform:rotate(180deg)}
+  details.ver > summary:hover .logbtn{color:var(--accent)}
+  .log-body{border-top:1px dashed var(--line);padding:12px 14px 14px}
+  .log-body ul{list-style:none;margin:0;padding:0}
+  .log-body li{display:grid;grid-template-columns:52px 1fr;gap:12px;font-size:12.5px;color:var(--ink-2);
+    padding:7px 0;border-top:1px dashed var(--line)}
+  .log-body li:first-child{border-top:0;padding-top:2px}
+  .log-body li em{font-style:normal;font-family:Consolas,monospace;font-size:12px;color:var(--accent-2)}
+  .log-body .gh{margin-top:12px;font-size:12.5px;color:var(--ink-2)}
+  .log-body .gh a{color:var(--accent-2)}
+
+  /* ---------- 四个入口：页面里占比最大的部分 ---------- */
+  .list{display:flex;flex-direction:column;gap:14px}
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:26px 26px 24px;box-shadow:0 1px 2px rgba(60,48,30,.05),0 12px 30px -20px rgba(60,48,30,.4);
+    transition:.16s ease;position:relative}
+  a.card:hover{border-color:var(--accent);transform:translateY(-1px);
+    box-shadow:0 2px 4px rgba(60,48,30,.06),0 16px 36px -20px rgba(60,48,30,.45)}
+  a.card b{display:block;font-size:17.5px;margin-bottom:5px;letter-spacing:.01em}
+  a.card span.d{font-size:13px;color:var(--ink-2);display:block;max-width:46em}
+  a.card .arrow{position:absolute;right:26px;top:26px;color:var(--accent);font-size:17px}
+  a.card .tagline{position:absolute;right:26px;bottom:24px;font-size:11.5px;color:var(--ink-3)}
+
+  .foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">站点导航</div>
+  <h1>数学错题整理智能体</h1>
+  <div class="sub">
+    贴一道错题（或拍张照），按固定七段告诉你这道题你是怎么错的，然后把这道题替你记着、
+    按 1 / 3 / 7 / 15 天拉你回来复习。初中到大学的高数、线代、概率都能用。
+  </div>
+
+  <details class="ver" id="versions">
+    <summary>
+      <span class="cur"><span class="dot"></span>当前版本 <b>v0.19</b> · 2026-11-15</span>
+      <span class="spacer"></span>
+      <span class="logbtn">版本公告</span>
+    </summary>
+    <div class="log-body">
+      <ul>
+        <li><em>v0.19</em><span>修变式题：题目区只放题目、点「看答案」才展开答案；模型把「题目＋答案」写进答案区、或先写「...」占位时自动拆开（查看/编辑/复习三处都修，老记录也生效）</span></li>
+        <li><em>v0.18</em><span>把「思考」和「正文」分开：思考折叠在单独区块、正文单独一栏；诊断思考预算提到 6000 tokens，仍然为空就关思考重试</span></li>
+        <li><em>v0.17</em><span>修「格式输出异常」：思考模式吃满输出长度导致正文为空 → 自动关思考、8000 tokens 重试；提示词缓存换 key（旧 JSON 协议不再生效）；失败日志记录 finish_reason</span></li>
+        <li><em>v0.16</em><span>「直接看图」不再只是设置里的开关：录入页按模式重排——图片为主线、文字框收起（可展开）；按钮变成「用这张图诊断」</span></li>
+        <li><em>v0.15</em><span>默认改为「直接看图」一站式诊断，先识别文字降为可选项；修复诊断方式切换后刷新被重置（属性没传值，处理函数没进）</span></li>
+        <li><em>v0.14</em><span>输出协议改为 Markdown 小标题（不再强求 JSON，失败率大幅下降）；新增「直接看图」诊断模式（设置可切）；流式输出边出边看；缺段自动补齐；失败自愈重写一次</span></li>
+        <li><em>v0.13</em><span>导出可选：设置里「选择…」勾几道导几道；修复手机端输入时键盘弹出导致文字被回滚；诊断加自动重试 / 小标题兜底 / 失败原文留档</span></li>
+        <li><em>v0.12</em><span>修复导入图片后的报错（Unterminated string in JSON）：模型返回的字符串里带真换行时自动修复，截断时自动补全；识别失败给中文提示，不再抛 JS 原话</span></li>
+        <li><em>v0.11</em><span>图片入口统一为「导入图片」（手机/电脑一致），并标注「手机弹出选项里，文件就是相册」</span></li>
+        <li><em>v0.10</em><span>删除入口移到错题本列表：「编辑」→ 每条右侧垃圾桶（灰→红）→ 弹窗确认；详情页不再放删除按钮</span></li>
+        <li><em>v0.9</em><span>可以删除错题了：详情页「删除这道」→ 二次确认，连本地存档一起清掉，统计与复习队列同步</span></li>
+        <li><em>v0.8</em><span>设备模式（自动 / 手机 / 电脑）：手机给「拍照 + 相册」，电脑给「选择图片」；Key 输入即自动保存，下次进来自动回填</span></li>
+        <li><em>v0.7</em><span>手机端图片入口拆成「拍照 / 相册」；修复虚线框文字溢出（label 行内元素导致）</span></li>
+        <li><em>v0.6</em><span>改名「数学错题整理智能体」；站点根改为导航页（进来先看这里，再进学习台）；版本公告收起并置顶</span></li>
+        <li><em>v0.5</em><span>接入真实模型：文本诊断、图片识别（拍照 / 拖图 / 粘贴 → 确认页）、401 / 402 / 429 人话提示、错题存进浏览器 IndexedDB</span></li>
+        <li><em>v0.4</em><span>术语调整：诊断说明书 → 免费版-skill</span></li>
+        <li><em>v0.3</em><span>改称学习台；出口②版式与③对齐；修复契约与 README 在浏览器里乱码</span></li>
+        <li><em>v0.2</em><span>首页改版（作者声明 / 三出口）；新增接入 API 教程；步骤可自定义；六套配色</span></li>
+        <li><em>v0.1</em><span>首个可用原型：落地页、向导、工作台、编辑态、复习闭环、统计三图</span></li>
+      </ul>
+      <div class="gh">本站开源：<a href="https://github.com/Aki-9-nine/problem-sesolve-mathematics" target="_blank" rel="noopener">GitHub 仓库</a>（产品契约、README、提交历史、可自行部署）</div>
+    </div>
+  </details>
+
+  <div class="list">
+    <a class="card" href="app/index.html">
+      <span class="arrow">→</span>
+      <b>学习台（从这里开始）</b>
+      <span class="d">录入（粘贴 / 拍照 / 拖图 / Ctrl+V）→ 七段诊断 → 编辑 → 错题本 · 复习 · 统计；已接真实 DeepSeek 模型</span>
+    </a>
+    <a class="card" href="app/index.html?screen=guide">
+      <span class="arrow">→</span>
+      <b>接入 API 教程</b>
+      <span class="d">四步拿到 DeepSeek Key（含平台截图与「只显示一次」的提醒）；Key 只存在你自己设备上</span>
+    </a>
+    <a class="card" href="app/index.html?screen=manual">
+      <span class="arrow">→</span>
+      <b>免费版-skill</b>
+      <span class="d">不用 Key、不存档：复制这段规则到豆包 / DeepSeek 等智能体里直接用</span>
+    </a>
+    <a class="card" href="#versions" id="open-log">
+      <span class="arrow">▾</span>
+      <b>版本与开源</b>
+      <span class="d">迭代记录（v0.1 → v0.5）与 GitHub 仓库地址；开源，可自行部署</span>
+      <span class="tagline">点这里展开版本公告</span>
+    </a>
+  </div>
+
+  <div class="foot">
+    这个工具本身不收费：诊断费用由你的 DeepSeek 账号直接结算（一次约 0.02 元），作者不参与、也看不到你的 Key。<br>
+    数据全部存在你自己的浏览器里，换设备靠「导出 JSON 备份」搬。
+  </div>
+</div>
+<script>
+  // 「版本与开源」卡片：展开顶部公告并滚过去
+  document.getElementById('open-log').addEventListener('click', function (e) {
+    e.preventDefault();
+    var box = document.getElementById('versions');
+    box.open = true;
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+</body>
+</html>
